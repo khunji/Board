@@ -9,9 +9,16 @@ dotenv.config(); //환경변수 설정하기
 
 connectDB(); //DB연결한다.
 
+//클라이언트가 보내는 json데이터를 처리할 Body-parser를 넣어주자.
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// /api/users로 시작하는 주소는 routes/users.js파일이 처리한다.
+app.use("/api/users", require("./routes/users"));
+
 //간단한 라우트(주소) 만들기
 app.get("/", (req, res) => {
-  res.send("성공! 백엔드 서바가 작동 중입니다.");
+  res.send("성공! 백엔드 서버가 작동 중입니다.");
 });
 
 //5.서버 실행하기

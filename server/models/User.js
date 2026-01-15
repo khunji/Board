@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcrypt"); //1. 암호화 도구 불러오기
+const saltRounds = 10; //암호화 꼬아서 만드는 정도(10)
 const userSchema = mongoose.Schema({
   //1. 이름(최대 50자)
   name: {
@@ -47,4 +48,9 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model("User");
+const User = mongoose.model("User", userSchema);
+
+module.exports = { User };
+//User를 그냥 주는 게 아니라 {User:User}라는 객체에 담아서 보낸다.
+//TMI module.exports = User;로 하면
+//users.js에서 const User = ... 가능하다.
