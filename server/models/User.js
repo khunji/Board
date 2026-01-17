@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt"); //1. 암호화 도구 불러오기
-const saltRounds = 10; //암호화 꼬아서 만드는 정도(10)
 const userSchema = mongoose.Schema({
   //1. 이름(최대 50자)
   name: {
