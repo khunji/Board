@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken"); //토큰을 만드는 기구
 //회원가입 로직
 const register = async (req, res) => {
   try {
+    //비밀번호 DB에 암호화
     const { password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -74,4 +75,20 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+//인증 로직
+const auth = (req, res) => {
+  //미들웨어(auth.js)를 통과함
+  //미들웨어가 찾아놓은 req.user정보를 꺼내서 보여주는 역할만 한다.
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true, //DB에는 0이 저장되어 있다.(일반 유저) 그러나 req.user.role이 0이면 false(관라지 아님)주고 1이면 true(관리자임)
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
+  });
+};
+
+module.exports = { register, login, auth };
