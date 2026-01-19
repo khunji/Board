@@ -15,7 +15,7 @@ const auth = (req, res, next) => {
   //3. 토큰 있을 때-->진짜인지 해독(verify)
   //암호 해독기:jwt.verify사용법
   //jwt.verify(검사할 토큰, 비밀키, 결과콜백함수)
-  jwt.verify(token, "secretToken", async (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     //err가 있으면 : 토큰이 유효기간이 지났거나, 해커가 조작한 토큰이다.
     if (err) return res.json({ isAuth: false, error: true });
 

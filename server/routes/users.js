@@ -15,6 +15,8 @@ router.post("/register", userController.register);
 router.post("/login", userController.login);
 
 //인증(Auth)
-router.get("/", auth, userController.auth);
+router.get("/auth", auth, userController.auth);
 
+//로그아웃
+router.get("/logout", auth, userController.logout);
 module.exports = router;

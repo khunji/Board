@@ -58,7 +58,7 @@ const login = async (req, res) => {
     //toHexString()쓴 이유 : _id는 문자열이 아니라 사실 ObjectId라는 특수한 객체이다.
     //하지만 우리가 필요한 값:(순수한 문자열)
     //몽고디비 전용 객체(이진 데이터)를 넣기보다 문자열(16진수)로 변환하는게 맞다.
-    const token = jwt.sign(user._id.toHexString(), "secretToken");
+    const token = jwt.sign(user._id.toHexString(), process.env.JWT_SECRET);
 
     //생성된 토큰을 유저 데이터에 넣고 저장.
     user.token = token;
@@ -91,4 +91,18 @@ const auth = (req, res) => {
   });
 };
 
-module.exports = { register, login, auth };
+//로그아웃
+const logout = async (req, res) => {
+  try {
+    //req.user는 auth 미들웨어를 통과해서 생김.
+    //내 아이디(_id)를 찾아서 token을 빈 문자열("")로 업데이트하자.
+    //모델.findOneAndUpdate({조건(Filter)}, {바꿀 내용 (Update)}, {옵션(Options)})
+    await User.findOneAndUpdate({ _id: req.user._id }, { token: "" });
+
+    return res.status(200).send({ success: true });
+  } catch (err) {
+    return res.json({ success: false }, err);
+  }
+};
+
+module.exports = { register, login, auth, logout };
