@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
   res.send("성공! 백엔드 서버가 작동 중입니다.");
 });
 
+app.get("/api/hello", (req, res) => {
+  res.send("안녕하세요~");
+});
+
 //5.서버 실행하기
 app.listen(port, () => {
   console.log(`Example app listen ${port}`);
